@@ -1,0 +1,55 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// 🧍 User account model
+model accountUser {
+  uniqueId      String    @id @default(uuid())
+  userName      String
+  userNumber    String    @unique
+  userEmail     String?
+  userPassword  String
+  userLogin     DateTime  @default(now()) @map("created_at")
+  userLogout    DateTime  @updatedAt @map("updated_at")
+
+  // Relations
+  contacts      userContact[]
+  spamReports   spamAlert[]
+
+  @@map("account_users")
+}
+
+// 📇 User's personal contact list model
+model userContact {
+  uniqueId      String  @id @default(uuid())
+  userName      String
+  userNumber    String
+  userEmail     String?
+
+  // Relation to the user who owns this contact
+  owner         accountUser @relation(fields: [accountUserId], references: [uniqueId], onDelete: Cascade)
+  accountUserId String
+
+  @@map("user_contacts")
+}
+
+// 🚫 Spam report model
+model spamAlert {
+  uniqueId        String   @id @default(uuid())
+  reportedNumber  String
+  createdAt       DateTime @default(now())
+
+  // Relation to the user who reported the number
+  reporter        accountUser @relation(fields: [accountUserId], references: [uniqueId], onDelete: Cascade)
+  accountUserId   String
+
+  @@map("spam_alerts")
+}
