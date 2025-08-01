@@ -80,5 +80,3 @@ npx prisma db seed
 
 6. Start the development server:
 npm run dev
-
-```bash
