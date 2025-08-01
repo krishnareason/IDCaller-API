@@ -48,7 +48,7 @@ This API supports user authentication, contact management, spam reporting, and a
 1. **Clone the repository:**
 
 ```bash
-git clone https://github.com/your-username/IDCaller-API.git
+git clone https://github.com/krishnareason/IDCaller-API.git
 cd IDCaller-API
 
 ---
@@ -58,3 +58,27 @@ npm install
 
 ---
 
+3. Create environment file:
+#Create .env file 
+# PostgreSQL connection string
+DATABASE_URL="postgresql://YOUR_USERNAME:YOUR_PASSWORD@localhost:5432/idcaller_db?schema=public"
+
+# JWT secret key
+JWT_SECRET="YOUR_SUPER_SECRET_JWT_KEY"
+
+---
+
+4. Run database migrations:
+npx prisma migrate dev
+
+---
+
+5. Seed the database:
+npx prisma db seed
+
+---
+
+6. Start the development server:
+npm run dev
+
+```bash
